@@ -1,14 +1,14 @@
 # Tour and Travels
 
-This project has two folders: one project using dummy data and the other utilizing the database.
+You will need a copy of Node.js as an environment to run the package. Then you use a dependency manager like npm, yarn or pnpm to download TypeScript into your project.
 
-How to Run Both Projects?
+npm install typescript --save-dev
 
-1. Dummy Data and Local Storage Project:
-   Run using the live server in Visual Studio:
-   Navigate to Extensions -> Search for "Live Server" and install it.
+You can then run the TypeScript compiler using one of the following commands:
 
-2. Work in Progress.
+npx tsc
+
+Note: Link your compile file to HTML file/files.
 
 <img src="./Website Images/Home.png">
 
