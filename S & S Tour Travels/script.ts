@@ -3,54 +3,130 @@
 var grabLocalStorageSignIn = localStorage.getItem("SignIn") || "[]";
 
 function checkLocalStorageSignin() {
+  var login = document.querySelector<HTMLElement>("#headerLogin")!;
+  var logout = document.querySelector<HTMLElement>("#headerLogout")!;
+  var profile = document.querySelector<HTMLElement>("#headerProfile")!;
+
   if (grabLocalStorageSignIn === "[]" || grabLocalStorageSignIn === null) {
-    document.querySelector("#headerLogin").style.display = "flex";
-    document.querySelector("#headerLogout").style.display = "none";
-    document.querySelector("#headerProfile").style.display = "none";
+    login.style.display = "flex";
+    logout.style.display = "none";
+    profile.style.display = "none";
   } else {
-    document.querySelector("#headerLogin").style.display = "none";
-    document.querySelector("#headerLogout").style.display = "flex";
-    document.querySelector("#headerProfile").style.display = "block";
+    login.style.display = "none";
+    logout.style.display = "flex";
+    profile.style.display = "flex";
 
-    data = JSON.parse(grabLocalStorageSignIn);
+    var data: {
+      title: string;
+      firstname: string;
+      lastname: string;
+      city: string;
+      state: string;
+      country: string;
+      email: string;
+      phone: string;
+      address: string;
+      password: string;
+    } = JSON.parse(grabLocalStorageSignIn);
 
-    user = `${data.title} ${data.firstname} ${data.lastname}`;
-    address = `${data.address} ${data.city} ${data.state} ${data.country}`;
-    document.querySelector("#DBuser").innerHTML = user;
-    document.querySelector("#DBaddress").innerHTML = address;
-    document.querySelector("#DBemail").innerHTML = `${data.email} `;
-    document.querySelector("#DBphone").innerHTML = `${data.phone} `;
-    document.querySelector("#DBpassword").innerHTML = `${data.password} `;
+    var user: string = `${data.title} ${data.firstname} ${data.lastname}`;
+    var address: string = `${data.address} ${data.city} ${data.state} ${data.country}`;
+    var email: string = `${data.email}`;
+    var phone: string = `${data.phone}`;
+    var password: string = `${data.password}`;
+
+    document.querySelector("#DBuser")!.innerHTML = user;
+    document.querySelector("#DBaddress")!.innerHTML = address;
+    document.querySelector("#DBemail")!.innerHTML = email;
+    document.querySelector("#DBphone")!.innerHTML = phone;
+    document.querySelector("#DBpassword")!.innerHTML = password;
   }
 }
 
 checkLocalStorageSignin();
 
 function logout() {
+  var login = document.querySelector<HTMLElement>("#headerLogin")!;
+  var logout = document.querySelector<HTMLElement>("#headerLogin")!;
+  var profile = document.querySelector<HTMLElement>("#headerLogin")!;
+
   localStorage.setItem("SignIn", "[]");
-  document.querySelector("#headerLogin").style.display = "flex";
-  document.querySelector("#headerLogout").style.display = "none";
-  document.querySelector("#headerProfile").style.display = "none";
+
+  login.style.display = "flex";
+  logout.style.display = "none";
+  profile.style.display = "none";
+}
+
+////////////////////////// Login Grab Registration LocalStorage Code ////////////////////////////////
+
+function grabLocalStorageRegistration() {
+  var getRegistrations = localStorage.getItem("Registration") || "[]";
+  var data: {
+    title: string;
+    firstname: string;
+    lastname: string;
+    city: string;
+    state: string;
+    country: string;
+    email: string;
+    phone: string;
+    address: string;
+    password: string;
+    id: string;
+  }[] = JSON.parse(getRegistrations);
+
+  return data;
 }
 
 //////////////////////////// Form validation code ////////////////////////////////
 
-var submit = false;
+var submit: boolean = false;
+var signIn: {
+  title: string;
+  firstname: string;
+  lastname: string;
+  city: string;
+  state: string;
+  country: string;
+  email: string;
+  phone: string;
+  address: string;
+  password: string;
+  id: string;
+};
+
+var submitArray: {
+  submit: boolean;
+  signIn: {
+    title: string;
+    firstname: string;
+    lastname: string;
+    city: string;
+    state: string;
+    country: string;
+    email: string;
+    phone: string;
+    address: string;
+    password: string;
+    id: string;
+  };
+};
+
 var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 var phoneFormat = /^\d{10}$/;
 var alphabetFormat = /^[A-Za-z]+$/;
 
-function inputFocus(input) {
+function inputFocus(input: HTMLInputElement) {
   // input.previousElementSibling.style.display = "none";
-  input.previousElementSibling.innerHTML = "";
+  input.previousElementSibling!.innerHTML = "";
 }
 
-function errorMessage(input, message) {
+function errorMessage(input: HTMLInputElement, message: string) {
   // input.previousElementSibling.style.display = "block";
-  input.previousElementSibling.innerHTML = message;
+  input.previousElementSibling!.innerHTML = message;
 }
 
-function inputValidationTitle(input) {
+function inputValidationTitle(input: HTMLInputElement) {
   if (input.value === "PLEASE SELECT") {
     errorMessage(input, "Please select title");
     submit = false;
@@ -60,7 +136,7 @@ function inputValidationTitle(input) {
   return submit;
 }
 
-function inputValidationAlphabet(input) {
+function inputValidationAlphabet(input: HTMLInputElement) {
   if (!input.value.match(alphabetFormat)) {
     errorMessage(input, "Enter alphabet only");
     submit = false;
@@ -70,7 +146,7 @@ function inputValidationAlphabet(input) {
   return submit;
 }
 
-function inputValidationEmail(input) {
+function inputValidationEmail(input: HTMLInputElement) {
   if (!input.value.match(emailFormat)) {
     errorMessage(input, "Enter email format");
     submit = false;
@@ -93,7 +169,7 @@ function inputValidationEmail(input) {
   return submit;
 }
 
-function inputValidationPhone(input) {
+function inputValidationPhone(input: HTMLInputElement) {
   if (!input.value.match(phoneFormat)) {
     errorMessage(input, "Enter 10 digit only");
     submit = false;
@@ -103,15 +179,14 @@ function inputValidationPhone(input) {
   return submit;
 }
 
-function inputValidationAddress(input) {
+function inputValidationAddress(input: HTMLInputElement) {
   submit = true;
   return submit;
 }
 
-function inputValidationUsername(input) {
+function inputValidationUsername(input: HTMLInputElement) {
   if (!input.value.match(emailFormat)) {
     errorMessage(input, "Enter email format");
-    signIn = "[]";
     submit = false;
   } else {
     var getRegistrations = grabLocalStorageRegistration();
@@ -122,7 +197,6 @@ function inputValidationUsername(input) {
       for (var i = 0; i < getRegistrations.length; i++) {
         if (input.value !== getRegistrations[i].email) {
           errorMessage(input, "Enter is not registered");
-          signIn = "[]";
           submit = false;
         } else {
           signIn = getRegistrations[i];
@@ -131,14 +205,13 @@ function inputValidationUsername(input) {
       }
     } else {
       errorMessage(input, "Enter is not registered");
-      signIn = "[]";
       submit = false;
     }
   }
-  return [submit, signIn];
+  return { submit: submit, signIn: signIn || null };
 }
 
-function inputValidationPassword(input) {
+function inputValidationPassword(input: HTMLInputElement) {
   var getRegistrations = grabLocalStorageRegistration();
   if (JSON.stringify(getRegistrations) !== "[]" || getRegistrations !== null) {
     for (var i = 0; i < getRegistrations.length; i++) {
@@ -156,8 +229,8 @@ function inputValidationPassword(input) {
   return submit;
 }
 
-function inputValidationFrom(input) {
-  var to = document.form.to;
+function inputValidationFrom(input: HTMLInputElement) {
+  var to = document.querySelector("form")!.to;
   if (input.value === to.value) {
     errorMessage(input, "Please select different destinations.");
     errorMessage(to, "Please select different destinations.");
@@ -172,8 +245,9 @@ function inputValidationFrom(input) {
   return submit;
 }
 
-function inputValidationTo(input) {
-  var from = document.form.from;
+function inputValidationTo(input: HTMLInputElement) {
+  var from = document.querySelector("form")!.from;
+
   if (input.value === from.value) {
     errorMessage(input, "Please select different destinations.");
     errorMessage(from, "Please select different destinations.");
@@ -188,7 +262,7 @@ function inputValidationTo(input) {
   return submit;
 }
 
-function inputValidation(input) {
+function inputValidation(input: HTMLInputElement) {
   if (
     input.value === "" ||
     input.value === "PLEASE SELECT" ||
@@ -209,7 +283,7 @@ function inputValidation(input) {
     } else if (input.name === "address") {
       submit = inputValidationAddress(input);
     } else if (input.name === "username") {
-      submit = inputValidationUsername(input);
+      submitArray = inputValidationUsername(input);
     } else if (input.name === "password") {
       submit = inputValidationPassword(input);
     } else if (input.name === "from") {
@@ -220,13 +294,14 @@ function inputValidation(input) {
       submit = inputValidationAlphabet(input);
     }
   }
-
-  return submit;
+  return { submit: submit, submitArray: submitArray };
 }
 
 ////////////////////////// Load Images's object for Home and Login page code ////////////////////////////////
 
-var imageArray, sliderImageLength, randomIndex;
+var imageArray: { image: string; title: string }[],
+  sliderImageLength: number,
+  randomIndex: number;
 
 function grabArrayObjectData() {
   imageArray = [
@@ -264,13 +339,15 @@ function grabArrayObjectData() {
 
 ////////////////////////// Home Slider Code ////////////////////////////////
 
-function homeImageChange(randomIndex) {
-  document.querySelector(".slider-image").src = imageArray[randomIndex].image;
-  document.querySelector(".slider-title").innerHTML =
-    imageArray[randomIndex].title;
+function homeImageChange(randomIndex: number) {
+  var imageEl = document.querySelector<HTMLImageElement>(".slider-image");
+  var imageTitleEl = document.querySelector<HTMLDivElement>(".slider-title");
+
+  imageEl!.src = imageArray[randomIndex].image;
+  imageTitleEl!.innerHTML = imageArray[randomIndex].title;
 }
 
-function homeSliderButton(text) {
+function homeSliderButton(text: string) {
   if (text === "left") {
     randomIndex = randomIndex - 1;
     if (randomIndex < 0) {
@@ -295,36 +372,40 @@ function homeOnload() {
 
 ////////////////////////// Flight Dummy Data ////////////////////////////////
 
-var economicPrice = 1;
-var premiumPrice = 1.2;
-var businessPrice = 1.5;
-var reservationClassPrice;
+var economicPrice: number = 1;
+var premiumPrice: number = 1.2;
+var businessPrice: number = 1.5;
 
-var kmPrice = 5;
+var kmPrice: number = 5;
 
 function measureKm(
-  originLaltitude,
-  originLongitude,
-  destinationLaltitude,
-  destinationLongitude
+  originLaltitude: number,
+  originLongitude: number,
+  destinationLaltitude: number,
+  destinationLongitude: number
 ) {
-  var radius = 6378.137;
-  var Laltitude =
+  var radius: number = 6378.137;
+  var Laltitude: number =
     (destinationLaltitude * Math.PI) / 180 - (originLaltitude * Math.PI) / 180;
-  var Longitude =
+  var Longitude: number =
     (destinationLongitude * Math.PI) / 180 - (originLongitude * Math.PI) / 180;
-  var a =
+  var a: number =
     Math.sin(Laltitude / 2) * Math.sin(Laltitude / 2) +
     Math.cos((originLaltitude * Math.PI) / 180) *
       Math.cos((destinationLaltitude * Math.PI) / 180) *
       Math.sin(Longitude / 2) *
       Math.sin(Longitude / 2);
-  var center = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var distance = radius * center;
+  var center: number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var distance: number = radius * center;
   return distance;
 }
 
-var airlineObjects = [
+var airlineObjects: {
+  number: string;
+  name: string;
+  operate: string;
+  wifi: boolean;
+}[] = [
   {
     number: "AC 056",
     name: "Air Mumbai",
@@ -363,7 +444,14 @@ var airlineObjects = [
   },
 ];
 
-var airportObjects = [
+var airportObjects: {
+  airportCode: number;
+  airportName: string;
+  airportShortName: string;
+  location: string;
+  facilities: string;
+  cooridates: { laltitude: number; longitude: number };
+}[] = [
   {
     airportCode: 584,
     airportName: "Delhi Airport",
@@ -390,7 +478,36 @@ var airportObjects = [
   },
 ];
 
-var flightObjects = [
+var flightObjects: {
+  flightId: number;
+  flightNumber: number;
+  departureDateTime: string;
+  arrivalDateTime: string;
+  originAirportCode: number;
+  destinationAirportCode: number;
+  availableSeats: number;
+  intialPlaneAssign: {
+    number: string;
+    name: string;
+    operate: string;
+    wifi: boolean;
+  };
+  stopAirportCode:
+    | {
+        code: number;
+        waitingTime: string;
+        planeAssign: {
+          number: string;
+          name: string;
+          operate: string;
+          wifi: boolean;
+        } | null;
+      }[]
+    | [];
+  economy: number;
+  premium: number;
+  business: number;
+}[] = [
   {
     flightId: 35536,
     flightNumber: 236,
@@ -658,26 +775,27 @@ var flightObjects = [
 
 ////////////////////////// Reservation Title Change Code ////////////////////////////////
 
-function reservationTitle(text) {
-  document.querySelector("#reservation-heading").innerHTML =
+function reservationTitle(text: string) {
+  document.querySelector("#reservation-heading")!.innerHTML =
     text + " RESERVATION";
 }
 
 ////////////////////////// Reservation Calculation Code ////////////////////////////////
 
 function ChangeStartDate() {
-  var startDate = document.querySelector(".start-date").value;
-  document.querySelector(".end-date").min = startDate;
+  var startDate =
+    document.querySelector<HTMLInputElement>(".start-date")!.value;
+  document.querySelector<HTMLInputElement>(".end-date")!.min = startDate;
 }
 
-function flights(from, to) {
+function flights(from: string, to: string) {
   var lists = document.querySelector(".reservation-lists");
   var list = document.querySelectorAll(".reservation-list");
 
   var array = [];
 
   for (var i = 1; i < list.length; i++) {
-    lists.removeChild(list[i]);
+    lists!.removeChild(list[i]);
   }
 
   for (var i = 0; i < airportObjects.length; i++) {
@@ -695,10 +813,10 @@ function flights(from, to) {
   loading.classList.add("reservation-loading");
   loading.src = "../Images/loading.jpeg";
 
-  lists.appendChild(loading);
+  lists!.appendChild(loading);
 
   setTimeout(() => {
-    lists.removeChild(loading);
+    lists!.removeChild(loading);
     for (var i = 0; i < flightObjects.length; i++) {
       var flightObject = flightObjects[i]; // Assign
       var flightOrigin = flightObject.originAirportCode; // Assign
@@ -802,7 +920,7 @@ function flights(from, to) {
           var code = flightStopCode[l].code;
           var plane = flightStopCode[l].planeAssign;
 
-          for (m = 0; m < airportObjects.length; m++) {
+          for (var m = 0; m < airportObjects.length; m++) {
             var airportObject = airportObjects[m];
 
             if (airportObject.airportCode === code) {
@@ -812,7 +930,7 @@ function flights(from, to) {
               stops.appendChild(routeText);
 
               if (plane !== null) {
-                for (n = 0; n < airlineObjects.length; n++) {
+                for (var n = 0; n < airlineObjects.length; n++) {
                   var airlineObject = airlineObjects[n];
 
                   var wifi = document.createElement("img");
@@ -836,7 +954,7 @@ function flights(from, to) {
         // stops.appendChild(routes);
 
         if (flightDestination !== null && flightDestination) {
-          dotRight = document.createElement("div");
+          var dotRight = document.createElement("div");
           dotRight.classList.add("reservation-route-dots");
           stops.appendChild(dotRight);
         }
@@ -853,11 +971,11 @@ function flights(from, to) {
 
         locations.appendChild(waitingTime);
 
-        for (o = 0; o < flightStopCode.length; o++) {
+        for (var o = 0; o < flightStopCode.length; o++) {
           var code = flightStopCode[o].code;
           var time = flightStopCode[o].waitingTime;
 
-          for (p = 0; p < airportObjects.length; p++) {
+          for (var p = 0; p < airportObjects.length; p++) {
             var airportObject = airportObjects[p];
             if (airportObject.airportCode === code) {
               var waitingTimeText = document.createElement("p");
@@ -912,18 +1030,18 @@ function flights(from, to) {
         priceDetailBusiness.appendChild(priceBusinessText);
 
         array.push(list);
-        lists.appendChild(list);
+        lists!.appendChild(list);
       }
     }
   }, Math.floor(Math.random() * 5000) + 1000);
 
   var flightFound = document.querySelector(".reservation-detail");
-  flightFound.innerHTML = `Flight results: ${array.length} flights found`;
+  flightFound!.innerHTML = `Flight results: ${array.length} flights found`;
 }
 
 function reservationFlights() {
-  var from = document.form.from;
-  var to = document.form.to;
+  var from = document.querySelector("form")!.from;
+  var to = document.querySelector("form")!.to;
   if (
     (from.value === "Please Select" || from.value === "PLEASE SELECT") &&
     (to.value === "Please Select" || to.value === "PLEASE SELECT")
@@ -956,14 +1074,14 @@ function reservationFlights() {
 }
 
 function reservationOnLoad() {
-  var from = document.form.from;
-  var to = document.form.to;
+  var from = document.querySelector("form")!.from;
+  var to = document.querySelector("form")!.to;
   var formOption;
 
-  var adult = document.form.adult;
-  var child = document.form.child;
+  var adult = document.querySelector("form")!.adult;
+  var child = document.querySelector("form")!.child;
 
-  for (i = 0; i < airportObjects.length; i++) {
+  for (var i = 0; i < airportObjects.length; i++) {
     var airportObject = airportObjects[i]; // Assign
 
     formOption = document.createElement("option");
@@ -983,37 +1101,39 @@ function reservationOnLoad() {
 
   for (i = 1; i <= 100; i++) {
     formOption = document.createElement("option");
-    formOption.value = i;
-    formOption.innerHTML = i;
+    formOption.value = String(i);
+    formOption.innerHTML = String(i);
     adult.appendChild(formOption);
   }
 
   for (i = 0; i <= 100; i++) {
     formOption = document.createElement("option");
-    formOption.value = i;
-    formOption.innerHTML = i;
+    formOption.value = String(i);
+    formOption.innerHTML = String(i);
     child.appendChild(formOption);
   }
 
-  Date.prototype.addDays = function (days) {
-    this.setDate(this.getDate() + days);
+  Date.prototype.addDays = function (days: number) {
+    new Date().setDate(new Date().getDate() + days);
     return this;
   };
 
-  var sevenDays = new Date().addDays(7);
-  var fourteenDays = new Date().addDays(14);
-  var yearDays = new Date().addDays(365);
+  var date = new Date();
 
-  function dateConvert(date) {
+  var sevenDays = date.addDays(7);
+  var fourteenDays = date.addDays(14);
+  var yearDays = date.addDays(365);
+
+  function dateConvert(date: Date) {
     return date.toISOString().split("T")[0];
   }
 
-  var startDate = document.querySelector(".start-date");
+  var startDate = document.querySelector<HTMLInputElement>(".start-date")!;
   startDate.value = dateConvert(sevenDays);
   startDate.min = dateConvert(sevenDays);
   startDate.max = dateConvert(yearDays);
 
-  var returnDate = document.querySelector(".end-date");
+  var returnDate = document.querySelector<HTMLInputElement>(".end-date")!;
   returnDate.value = dateConvert(fourteenDays);
   returnDate.min = dateConvert(sevenDays);
   returnDate.max = dateConvert(yearDays);
@@ -1024,22 +1144,13 @@ function reservationOnLoad() {
 ////////////////////////// Login Signup and Signin Code ////////////////////////////////
 
 function signUpButton() {
-  document.querySelector(".login").style.display = "none";
-  document.querySelector(".registration").style.display = "flex";
+  document.querySelector<HTMLElement>(".login")!.style.display = "none";
+  document.querySelector<HTMLElement>(".registration")!.style.display = "flex";
 }
 
 function signInButton() {
-  document.querySelector(".login").style.display = "grid";
-  document.querySelector(".registration").style.display = "none";
-}
-
-////////////////////////// Login Grab Registration LocalStorage Code ////////////////////////////////
-
-function grabLocalStorageRegistration() {
-  var getRegistrations = localStorage.getItem("Registration") || "[]";
-  getRegistrations = JSON.parse(getRegistrations);
-
-  return getRegistrations;
+  document.querySelector<HTMLElement>(".login")!.style.display = "grid";
+  document.querySelector<HTMLElement>(".registration")!.style.display = "none";
 }
 
 ////////////////////////// Login Slider Code ////////////////////////////////
@@ -1048,36 +1159,53 @@ function loginLoadImage() {
   if (randomIndex === sliderImageLength) {
     randomIndex = 0;
   }
-  document.querySelector(".login-img-slider").src =
+  document.querySelector<HTMLImageElement>(".login-img-slider")!.src =
     imageArray[randomIndex].image;
-  document.querySelector(".login-img-slider-name").innerHTML =
+  document.querySelector<HTMLElement>(".login-img-slider-name")!.innerHTML =
     imageArray[randomIndex].title;
   randomIndex++;
 }
 
 ////////////////////////// Login SignIn Code ////////////////////////////////
 
-var validation = false,
-  registration = [],
-  registerObject = {};
+var validation = false;
+var registration = [];
+var registerObject: {
+  title: string;
+  firstname: string;
+  lastname: string;
+  city: string;
+  state: string;
+  country: string;
+  email: string;
+  phone: string;
+  address: string;
+  password: string;
+  id: string;
+};
 
 function SignInSubmission() {
-  var signInFormSubmission = document.getElementById("login");
+  var signInFormSubmission = document.getElementById("login")!;
 
   signInFormSubmission.addEventListener("submit", (e) => {
     e.preventDefault();
+    var target = e.target! as HTMLFormElement;
 
-    var username = e.target.querySelector(".username");
-    var password = e.target.querySelector(".password");
+    var username = target.querySelector<HTMLInputElement>(".username")!;
+    var password = target.querySelector<HTMLInputElement>(".password")!;
 
     if (username.value !== "" && password.value !== "") {
       var submitUsername = inputValidation(username);
       var submitPassword = inputValidation(password);
 
-      if (submitUsername[0] === submitPassword) {
-        localStorage.setItem("SignIn", JSON.stringify(submitUsername[1]));
-        document.location.href =
-          "/S%20%26%20S%20Tour%20Travels/html/Profile.html";
+      console.log("1", submitUsername.submitArray.signIn);
+
+      if (submitUsername.submit === submitPassword.submit) {
+        localStorage.setItem(
+          "SignIn",
+          JSON.stringify(submitUsername.submitArray.signIn)
+        );
+        document.location.href = "/dist/html/Profile.html";
         checkLocalStorageSignin();
       }
     } else if (username.value === "" && password.value === "") {
@@ -1115,19 +1243,26 @@ function generateId() {
 
 function SignUpSubmission() {
   var validation = false;
-  var signUpFormSubmission = document.getElementById("signup");
+  var signUpFormSubmission = document.getElementById("signup")!;
 
   signUpFormSubmission.addEventListener("submit", (e) => {
+    var target = e.target! as HTMLFormElement;
     e.preventDefault();
 
     var getRegistrations = grabLocalStorageRegistration();
-    var inputs = e.target.querySelectorAll("select, input ,textarea");
+    var inputs = target.querySelectorAll<HTMLInputElement>(
+      "select, input ,textarea"
+    );
 
     for (var i = 0; i < inputs.length; i++) {
       var submitForm = inputValidation(inputs[i]);
       if (submitForm) {
         validation = true;
-        Object.assign(registerObject, { [inputs[i].name]: inputs[i].value });
+        // Object.assign(registerObject, { [inputs[i].name]: inputs[i].value });
+        registerObject = {
+          ...registerObject,
+          [inputs[i].name]: inputs[i].value,
+        };
       } else {
         validation = false;
         break;
@@ -1135,10 +1270,15 @@ function SignUpSubmission() {
     }
 
     if (validation) {
-      Object.assign(registerObject, {
+      // Object.assign(registerObject, {
+      //   id: generateId(),
+      //   password: generatePassword(),
+      // });
+      registerObject = {
+        ...registerObject,
         id: generateId(),
         password: generatePassword(),
-      });
+      };
       getRegistrations.push(registerObject);
       localStorage.setItem("Registration", JSON.stringify(getRegistrations));
       for (var i = 0; i < inputs.length; i++) {

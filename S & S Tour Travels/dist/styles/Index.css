@@ -41,11 +41,11 @@ p {
   margin: 0;
 }
 
-input,
+/* input,
 select,
 textarea {
   text-transform: uppercase;
-}
+} */
 
 input {
   margin: 0;
