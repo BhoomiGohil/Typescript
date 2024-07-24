@@ -8,7 +8,17 @@ You can then run the TypeScript compiler using one of the following commands:
 
 npx tsc
 
-Note: Link your compile file to HTML file/files.
+Note: Link your compile file to HTML file/files and also don't forgot to run your project using live server extension if you are using Visual Studio.
+
+Step:
+
+1. Navigate to Extensions.
+2. Search for "Live Server" and install it.
+3. Click on Go Live option to run project.
+
+Happy coding.
+
+Project Visuals
 
 <img src="./Website Images/Home.png">
 
