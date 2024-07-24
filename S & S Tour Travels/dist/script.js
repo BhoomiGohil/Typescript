@@ -25,24 +25,26 @@ function checkLocalStorageSignin() {
         login.style.display = "none";
         logout.style.display = "flex";
         profile.style.display = "flex";
-        var data = JSON.parse(grabLocalStorageSignIn);
-        var user = "".concat(data.title, " ").concat(data.firstname, " ").concat(data.lastname);
-        var address = "".concat(data.address, " ").concat(data.city, " ").concat(data.state, " ").concat(data.country);
-        var email = "".concat(data.email);
-        var phone = "".concat(data.phone);
-        var password = "".concat(data.password);
-        document.querySelector("#DBuser").innerHTML = user;
-        document.querySelector("#DBaddress").innerHTML = address;
-        document.querySelector("#DBemail").innerHTML = email;
-        document.querySelector("#DBphone").innerHTML = phone;
-        document.querySelector("#DBpassword").innerHTML = password;
     }
 }
 checkLocalStorageSignin();
+function profileOnLoad() {
+    var data = JSON.parse(grabLocalStorageSignIn);
+    var user = "".concat(data.title, " ").concat(data.firstname, " ").concat(data.lastname);
+    var address = "".concat(data.address, " ").concat(data.city, " ").concat(data.state, " ").concat(data.country);
+    var email = "".concat(data.email);
+    var phone = "".concat(data.phone);
+    var password = "".concat(data.password);
+    document.querySelector("#DBuser").innerHTML = user;
+    document.querySelector("#DBaddress").innerHTML = address;
+    document.querySelector("#DBemail").innerHTML = email;
+    document.querySelector("#DBphone").innerHTML = phone;
+    document.querySelector("#DBpassword").innerHTML = password;
+}
 function logout() {
     var login = document.querySelector("#headerLogin");
-    var logout = document.querySelector("#headerLogin");
-    var profile = document.querySelector("#headerLogin");
+    var logout = document.querySelector("#headerLogout");
+    var profile = document.querySelector("#headerProfile");
     localStorage.setItem("SignIn", "[]");
     login.style.display = "flex";
     logout.style.display = "none";
@@ -247,7 +249,9 @@ function inputValidation(input) {
     return { submit: submit, submitArray: submitArray };
 }
 ////////////////////////// Load Images's object for Home and Login page code ////////////////////////////////
-var imageArray, sliderImageLength, randomIndex;
+var imageArray;
+var sliderImageLength;
+var randomIndex;
 function grabArrayObjectData() {
     imageArray = [
         {
@@ -314,13 +318,13 @@ var businessPrice = 1.5;
 var kmPrice = 5;
 function measureKm(originLaltitude, originLongitude, destinationLaltitude, destinationLongitude) {
     var radius = 6378.137;
-    var Laltitude = (destinationLaltitude * Math.PI) / 180 - (originLaltitude * Math.PI) / 180;
-    var Longitude = (destinationLongitude * Math.PI) / 180 - (originLongitude * Math.PI) / 180;
-    var a = Math.sin(Laltitude / 2) * Math.sin(Laltitude / 2) +
+    var laltitude = (destinationLaltitude * Math.PI) / 180 - (originLaltitude * Math.PI) / 180;
+    var longitude = (destinationLongitude * Math.PI) / 180 - (originLongitude * Math.PI) / 180;
+    var a = Math.sin(laltitude / 2) * Math.sin(laltitude / 2) +
         Math.cos((originLaltitude * Math.PI) / 180) *
             Math.cos((destinationLaltitude * Math.PI) / 180) *
-            Math.sin(Longitude / 2) *
-            Math.sin(Longitude / 2);
+            Math.sin(longitude / 2) *
+            Math.sin(longitude / 2);
     var center = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var distance = radius * center;
     return distance;
@@ -518,9 +522,11 @@ function ChangeStartDate() {
     document.querySelector(".end-date").min = startDate;
 }
 function flights(from, to) {
+    var flightFound = document.querySelector(".reservation-detail");
     var lists = document.querySelector(".reservation-lists");
     var list = document.querySelectorAll(".reservation-list");
-    var array = [];
+    var count = 0;
+    flightFound.innerHTML = "Flight results: ".concat(count, " flights found");
     for (var i = 1; i < list.length; i++) {
         lists.removeChild(list[i]);
     }
@@ -694,13 +700,12 @@ function flights(from, to) {
                 priceBusinessText.innerHTML = "Includes lie-flat seats";
                 priceDetailBusiness.appendChild(priceBusinessPrice);
                 priceDetailBusiness.appendChild(priceBusinessText);
-                array.push(list);
+                count++;
                 lists.appendChild(list);
             }
         }
+        flightFound.innerHTML = "Flight results: ".concat(count, " flights found");
     }, Math.floor(Math.random() * 5000) + 1000);
-    var flightFound = document.querySelector(".reservation-detail");
-    flightFound.innerHTML = "Flight results: ".concat(array.length, " flights found");
 }
 function reservationFlights() {
     var from = document.querySelector("form").from;
@@ -761,14 +766,14 @@ function reservationOnLoad() {
         formOption.innerHTML = String(i);
         child.appendChild(formOption);
     }
-    Date.prototype.addDays = function (days) {
-        new Date().setDate(new Date().getDate() + days);
-        return this;
-    };
-    var date = new Date();
-    var sevenDays = date.addDays(7);
-    var fourteenDays = date.addDays(14);
-    var yearDays = date.addDays(365);
+    function updateDate(days) {
+        var date = new Date();
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+    var sevenDays = updateDate(7);
+    var fourteenDays = updateDate(14);
+    var yearDays = updateDate(365);
     function dateConvert(date) {
         return date.toISOString().split("T")[0];
     }

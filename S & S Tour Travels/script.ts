@@ -3,9 +3,9 @@
 var grabLocalStorageSignIn = localStorage.getItem("SignIn") || "[]";
 
 function checkLocalStorageSignin() {
-  var login = document.querySelector<HTMLElement>("#headerLogin")!;
-  var logout = document.querySelector<HTMLElement>("#headerLogout")!;
-  var profile = document.querySelector<HTMLElement>("#headerProfile")!;
+  var login: HTMLElement = document.querySelector("#headerLogin")!;
+  var logout: HTMLElement = document.querySelector("#headerLogout")!;
+  var profile: HTMLElement = document.querySelector("#headerProfile")!;
 
   if (grabLocalStorageSignIn === "[]" || grabLocalStorageSignIn === null) {
     login.style.display = "flex";
@@ -15,40 +15,42 @@ function checkLocalStorageSignin() {
     login.style.display = "none";
     logout.style.display = "flex";
     profile.style.display = "flex";
-
-    var data: {
-      title: string;
-      firstname: string;
-      lastname: string;
-      city: string;
-      state: string;
-      country: string;
-      email: string;
-      phone: string;
-      address: string;
-      password: string;
-    } = JSON.parse(grabLocalStorageSignIn);
-
-    var user: string = `${data.title} ${data.firstname} ${data.lastname}`;
-    var address: string = `${data.address} ${data.city} ${data.state} ${data.country}`;
-    var email: string = `${data.email}`;
-    var phone: string = `${data.phone}`;
-    var password: string = `${data.password}`;
-
-    document.querySelector("#DBuser")!.innerHTML = user;
-    document.querySelector("#DBaddress")!.innerHTML = address;
-    document.querySelector("#DBemail")!.innerHTML = email;
-    document.querySelector("#DBphone")!.innerHTML = phone;
-    document.querySelector("#DBpassword")!.innerHTML = password;
   }
 }
 
 checkLocalStorageSignin();
 
+function profileOnLoad() {
+  var data: {
+    title: string;
+    firstname: string;
+    lastname: string;
+    city: string;
+    state: string;
+    country: string;
+    email: string;
+    phone: string;
+    address: string;
+    password: string;
+  } = JSON.parse(grabLocalStorageSignIn);
+
+  var user: string = `${data.title} ${data.firstname} ${data.lastname}`;
+  var address: string = `${data.address} ${data.city} ${data.state} ${data.country}`;
+  var email: string = `${data.email}`;
+  var phone: string = `${data.phone}`;
+  var password: string = `${data.password}`;
+
+  document.querySelector("#DBuser")!.innerHTML = user;
+  document.querySelector("#DBaddress")!.innerHTML = address;
+  document.querySelector("#DBemail")!.innerHTML = email;
+  document.querySelector("#DBphone")!.innerHTML = phone;
+  document.querySelector("#DBpassword")!.innerHTML = password;
+}
+
 function logout() {
-  var login = document.querySelector<HTMLElement>("#headerLogin")!;
-  var logout = document.querySelector<HTMLElement>("#headerLogin")!;
-  var profile = document.querySelector<HTMLElement>("#headerLogin")!;
+  var login: HTMLElement = document.querySelector("#headerLogin")!;
+  var logout: HTMLElement = document.querySelector("#headerLogout")!;
+  var profile: HTMLElement = document.querySelector("#headerProfile")!;
 
   localStorage.setItem("SignIn", "[]");
 
@@ -112,9 +114,9 @@ var submitArray: {
   };
 };
 
-var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-var phoneFormat = /^\d{10}$/;
-var alphabetFormat = /^[A-Za-z]+$/;
+var emailFormat: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+var phoneFormat: RegExp = /^\d{10}$/;
+var alphabetFormat: RegExp = /^[A-Za-z]+$/;
 
 function inputFocus(input: HTMLInputElement) {
   // input.previousElementSibling.style.display = "none";
@@ -299,9 +301,9 @@ function inputValidation(input: HTMLInputElement) {
 
 ////////////////////////// Load Images's object for Home and Login page code ////////////////////////////////
 
-var imageArray: { image: string; title: string }[],
-  sliderImageLength: number,
-  randomIndex: number;
+var imageArray: { image: string; title: string }[];
+var sliderImageLength: number;
+var randomIndex: number;
 
 function grabArrayObjectData() {
   imageArray = [
@@ -340,11 +342,11 @@ function grabArrayObjectData() {
 ////////////////////////// Home Slider Code ////////////////////////////////
 
 function homeImageChange(randomIndex: number) {
-  var imageEl = document.querySelector<HTMLImageElement>(".slider-image");
-  var imageTitleEl = document.querySelector<HTMLDivElement>(".slider-title");
+  var imageEl: HTMLImageElement = document.querySelector(".slider-image")!;
+  var imageTitleEl: HTMLDivElement = document.querySelector(".slider-title")!;
 
-  imageEl!.src = imageArray[randomIndex].image;
-  imageTitleEl!.innerHTML = imageArray[randomIndex].title;
+  imageEl.src = imageArray[randomIndex].image;
+  imageTitleEl.innerHTML = imageArray[randomIndex].title;
 }
 
 function homeSliderButton(text: string) {
@@ -385,16 +387,16 @@ function measureKm(
   destinationLongitude: number
 ) {
   var radius: number = 6378.137;
-  var Laltitude: number =
+  var laltitude: number =
     (destinationLaltitude * Math.PI) / 180 - (originLaltitude * Math.PI) / 180;
-  var Longitude: number =
+  var longitude: number =
     (destinationLongitude * Math.PI) / 180 - (originLongitude * Math.PI) / 180;
   var a: number =
-    Math.sin(Laltitude / 2) * Math.sin(Laltitude / 2) +
+    Math.sin(laltitude / 2) * Math.sin(laltitude / 2) +
     Math.cos((originLaltitude * Math.PI) / 180) *
       Math.cos((destinationLaltitude * Math.PI) / 180) *
-      Math.sin(Longitude / 2) *
-      Math.sin(Longitude / 2);
+      Math.sin(longitude / 2) *
+      Math.sin(longitude / 2);
   var center: number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var distance: number = radius * center;
   return distance;
@@ -789,13 +791,15 @@ function ChangeStartDate() {
 }
 
 function flights(from: string, to: string) {
-  var lists = document.querySelector(".reservation-lists");
-  var list = document.querySelectorAll(".reservation-list");
+  var flightFound = document.querySelector(".reservation-detail")!;
+  var lists = document.querySelector(".reservation-lists")!;
+  var list = document.querySelectorAll(".reservation-list")!;
+  var count = 0;
 
-  var array = [];
+  flightFound.innerHTML = `Flight results: ${count} flights found`;
 
   for (var i = 1; i < list.length; i++) {
-    lists!.removeChild(list[i]);
+    lists.removeChild(list[i]);
   }
 
   for (var i = 0; i < airportObjects.length; i++) {
@@ -813,10 +817,10 @@ function flights(from: string, to: string) {
   loading.classList.add("reservation-loading");
   loading.src = "../Images/loading.jpeg";
 
-  lists!.appendChild(loading);
+  lists.appendChild(loading);
 
   setTimeout(() => {
-    lists!.removeChild(loading);
+    lists.removeChild(loading);
     for (var i = 0; i < flightObjects.length; i++) {
       var flightObject = flightObjects[i]; // Assign
       var flightOrigin = flightObject.originAirportCode; // Assign
@@ -1029,14 +1033,13 @@ function flights(from: string, to: string) {
         priceDetailBusiness.appendChild(priceBusinessPrice);
         priceDetailBusiness.appendChild(priceBusinessText);
 
-        array.push(list);
-        lists!.appendChild(list);
+        count++;
+        lists.appendChild(list);
       }
     }
-  }, Math.floor(Math.random() * 5000) + 1000);
 
-  var flightFound = document.querySelector(".reservation-detail");
-  flightFound!.innerHTML = `Flight results: ${array.length} flights found`;
+    flightFound!.innerHTML = `Flight results: ${count} flights found`;
+  }, Math.floor(Math.random() * 5000) + 1000);
 }
 
 function reservationFlights() {
@@ -1113,16 +1116,15 @@ function reservationOnLoad() {
     child.appendChild(formOption);
   }
 
-  Date.prototype.addDays = function (days: number) {
-    new Date().setDate(new Date().getDate() + days);
-    return this;
-  };
+  function updateDate(days: number) {
+    var date: Date = new Date();
+    date.setDate(date.getDate() + days);
+    return date;
+  }
 
-  var date = new Date();
-
-  var sevenDays = date.addDays(7);
-  var fourteenDays = date.addDays(14);
-  var yearDays = date.addDays(365);
+  var sevenDays = updateDate(7);
+  var fourteenDays = updateDate(14);
+  var yearDays = updateDate(365);
 
   function dateConvert(date: Date) {
     return date.toISOString().split("T")[0];
