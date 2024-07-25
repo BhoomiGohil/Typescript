@@ -1,5 +1,19 @@
 ////////////////////////// Header code ////////////////////////////////
 
+interface Data {
+  title: string;
+  firstname: string;
+  lastname: string;
+  city: string;
+  state: string;
+  country: string;
+  email: string;
+  phone: string;
+  address: string;
+  id: string;
+  password: string;
+}
+
 var grabLocalStorageSignIn = localStorage.getItem("SignIn") || "[]";
 
 function checkLocalStorageSignin() {
@@ -21,18 +35,7 @@ function checkLocalStorageSignin() {
 checkLocalStorageSignin();
 
 function profileOnLoad() {
-  var data: {
-    title: string;
-    firstname: string;
-    lastname: string;
-    city: string;
-    state: string;
-    country: string;
-    email: string;
-    phone: string;
-    address: string;
-    password: string;
-  } = JSON.parse(grabLocalStorageSignIn);
+  var data: Data = JSON.parse(grabLocalStorageSignIn);
 
   var user: string = `${data.title} ${data.firstname} ${data.lastname}`;
   var address: string = `${data.address} ${data.city} ${data.state} ${data.country}`;
@@ -63,19 +66,7 @@ function logout() {
 
 function grabLocalStorageRegistration() {
   var getRegistrations = localStorage.getItem("Registration") || "[]";
-  var data: {
-    title: string;
-    firstname: string;
-    lastname: string;
-    city: string;
-    state: string;
-    country: string;
-    email: string;
-    phone: string;
-    address: string;
-    password: string;
-    id: string;
-  }[] = JSON.parse(getRegistrations);
+  var data: Data[] = JSON.parse(getRegistrations);
 
   return data;
 }
@@ -83,35 +74,11 @@ function grabLocalStorageRegistration() {
 //////////////////////////// Form validation code ////////////////////////////////
 
 var submit: boolean = false;
-var signIn: {
-  title: string;
-  firstname: string;
-  lastname: string;
-  city: string;
-  state: string;
-  country: string;
-  email: string;
-  phone: string;
-  address: string;
-  password: string;
-  id: string;
-};
+var signIn: Data;
 
 var submitArray: {
   submit: boolean;
-  signIn: {
-    title: string;
-    firstname: string;
-    lastname: string;
-    city: string;
-    state: string;
-    country: string;
-    email: string;
-    phone: string;
-    address: string;
-    password: string;
-    id: string;
-  };
+  signIn: Data;
 };
 
 var emailFormat: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -1172,19 +1139,7 @@ function loginLoadImage() {
 
 var validation = false;
 var registration = [];
-var registerObject: {
-  title: string;
-  firstname: string;
-  lastname: string;
-  city: string;
-  state: string;
-  country: string;
-  email: string;
-  phone: string;
-  address: string;
-  password: string;
-  id: string;
-};
+var registerObject: Data;
 
 function SignInSubmission() {
   var signInFormSubmission = document.getElementById("login")!;
@@ -1260,7 +1215,6 @@ function SignUpSubmission() {
       var submitForm = inputValidation(inputs[i]);
       if (submitForm) {
         validation = true;
-        // Object.assign(registerObject, { [inputs[i].name]: inputs[i].value });
         registerObject = {
           ...registerObject,
           [inputs[i].name]: inputs[i].value,
@@ -1272,10 +1226,6 @@ function SignUpSubmission() {
     }
 
     if (validation) {
-      // Object.assign(registerObject, {
-      //   id: generateId(),
-      //   password: generatePassword(),
-      // });
       registerObject = {
         ...registerObject,
         id: generateId(),
