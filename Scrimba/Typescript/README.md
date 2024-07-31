@@ -1,33 +1,25 @@
-via npm
-TypeScript is available as a package on the npm registry available as "typescript".
+# Scrimba Typescript
 
 You will need a copy of Node.js as an environment to run the package. Then you use a dependency manager like npm, yarn or pnpm to download TypeScript into your project.
 
 npm install typescript --save-dev
 
-npm yarn pnpm
-All of these dependency managers support lockfiles, ensuring that everyone on your team is using the same version of the language. You can then run the TypeScript compiler using one of the following commands:
+Now, you have to create tsconfig.json file using following command:
+
+npx tsc --init
+
+You can then run the TypeScript compiler using one of the following commands:
 
 npx tsc
 
-Once working I found that the resolveFullPaths option fixed the issue OP described.
+Note: Link your compile file to HTML file/files and also don't forgot to run your project using live server extension if you are using Visual Studio.
 
-Install tsc-alias
+Step:
 
-yarn add -D -E tsc-alias
-Configure tsconfig.js
+1. Navigate to Extensions.
+2. Search for "Live Server" and install it.
+3. Click on Go Live option to run project.
 
-{
-"compilerOptions": {
-...
-},
-"tsc-alias": {
-"resolveFullPaths": true,
-"verbose": false
-}
-}
-Update your build/compile script to call tsc-alias after tsc
+Note: You have to run npx tsc command for compiling the file after update.
 
-"scripts": {
-"compile": "tsc && tsc-alias"
-}
+Happy coding.
