@@ -4,6 +4,10 @@ You will need a copy of Node.js as an environment to run the package. Then you u
 
 npm install typescript --save-dev
 
+Now, you have to create tsconfig.json file using following command:
+
+npx tsc --init
+
 You can then run the TypeScript compiler using one of the following commands:
 
 npx tsc
@@ -15,6 +19,8 @@ Step:
 1. Navigate to Extensions.
 2. Search for "Live Server" and install it.
 3. Click on Go Live option to run project.
+
+Note: You have to run npx tsc command for compiling the file after update.
 
 Happy coding.
 
