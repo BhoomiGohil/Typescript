@@ -116,7 +116,7 @@ class VirtualPoint {
 const newVPoint = new VirtualPoint(13, 56);
 logPoint(newVPoint); // logs "13, 56"
 
-// Basics
+// The Basics
 
 const message = "Hello World!";
 
@@ -174,8 +174,10 @@ console.log("Hello world!");
 // }
 
 // greet("Brendan"); // Expected 2 arguments, but got 1.
+
 function greet(person: string, date: Date) {
+  // : string and : Date is called type annotations
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
 
-greet("Brendan", new Date());
+greet("Maddison", new Date());
