@@ -116,6 +116,8 @@ class VirtualPoint {
 const newVPoint = new VirtualPoint(13, 56);
 logPoint(newVPoint); // logs "13, 56"
 
+// Basics
+
 const message = "Hello World!";
 
 // Accessing the property 'toLowerCase'
@@ -127,10 +129,10 @@ message.toLowerCase();
 // message(); // message is not a function in js / this expression is not callable in ts.
 
 // function fn(x) {
-//   return x.flip(20); // x.flip is not a function
+//   return x.flip; // x.flip is not a function
 // }
 
-// fn(4);
+// fn();
 
 const user4 = {
   name: "Bhoomi",
